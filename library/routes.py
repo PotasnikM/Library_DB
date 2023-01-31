@@ -43,7 +43,7 @@ def home_page_post():
 
 @app.route('/admin')
 def admin_page():
-    query0 = "Select s.'index',s.department, s.semester, b.title, i.issue_date, i.return_date, i.id, b.id as 'book_id' from books b, issue i, students s where i.book_id=b.id and i.student_id=s.id;"
+    query0 = "Select s.id_number,s.department, s.semester, b.title, i.issue_date, i.return_date, i.id, b.id as 'book_id' from books b, issue i, students s where i.book_id=b.id and i.student_id=s.id;"
     all_issued = db.session.execute(query0)
     issue_list = []
     for row in all_issued:
@@ -92,7 +92,7 @@ def login_page():
 def signin_page():
     form = RegisterForm()
     if form.validate_on_submit():
-        user_info = Students(index=form.index.data, department=form.department.data, semester=form.semester.data)
+        user_info = Students(id_number=form.index.data, department=form.department.data.replace('ď»ż', ""), semester=form.semester.data)
         user_to_create = StudentLogin(username=form.username.data, email_address=form.email_address.data,
                                       password=form.password1.data, student_id=form.index.data)
         db.session.add(user_info)
